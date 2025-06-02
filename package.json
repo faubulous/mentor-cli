@@ -1,12 +1,20 @@
 {
-  "name": "mentor-cli",
-  "version": "0.1.0",
+  "name": "@faubulous/mentor-cli",
+  "version": "0.1.2",
   "description": "Mentor command line utilities to support continous integration (CI) tasks in RDF projects.",
-  "main": "dist/mentor-cli.js",
-  "types": "dist/mentor-cli.d.ts",
-  "bin": {
-    "mentor-cli": "dist/mentor-cli.js"
+  "private": false,
+  "license": "GPL",
+  "author": {
+    "name": "Sebastian Faubel"
   },
+  "bin": {
+    "mentor-cli": "out/mentor-cli.js"
+  },
+  "files": [
+    "out/index.js",
+    "out/mentor-cli.js",
+    "out/vocabulary-generator.js"
+  ],
   "scripts": {
     "clean": "rimraf dist test/*.ts",
     "build": "npm run clean && tsc",
@@ -18,8 +26,6 @@
     "rdf",
     "generator"
   ],
-  "author": "",
-  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/faubulous/mentor-cli"
