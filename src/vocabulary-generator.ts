@@ -369,7 +369,7 @@ export class VocabularyGenerator {
     public async parseDirectory(pattern: string, createIndex: boolean = false, createSourceIndex: boolean = false): Promise<string[]> {
         const result = [];
 
-        const files = await glob(pattern);
+        const files = await glob(pattern) || [];
 
         for (let file of files) {
             if (fs.statSync(file).isDirectory()) continue;

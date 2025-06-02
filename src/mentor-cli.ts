@@ -14,7 +14,7 @@ program
 program
     .command("generate")
     .description("Generate TypeScript vocabulary files from RDF files")
-    .option("--input <pattern>", "Glob pattern for input RDF files (e.g., src/ontologies/*.(ttl|n3))")
+    .option("--input <pattern>", "Glob pattern for input RDF files (e.g., src/*.(ttl|n3))")
     .option("--output-extension <ext>", "Output file extension (default: .ts)", ".ts")
     .option("--create-index-ts", "Also generate an index.ts file", false)
     .option("--create-src-ts", "Also generate a src.ts file", false)
@@ -22,7 +22,7 @@ program
         console.log("Starting vocabulary generation...");
 
         if (options.input) {
-            const files = await generator.parseDirectory(options.inputDirectory, options.createIndexTs, options.createSrcTs);
+            const files = await generator.parseDirectory(options.input, options.createIndexTs, options.createSrcTs);
 
             if (files.length > 0) {
                 console.log(`Generated files:`);
