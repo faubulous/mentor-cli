@@ -1,6 +1,6 @@
 # Mentor CLI
 
-**mentor-cli** is a collection of command-line utilities which are intended to support CI workflows for projects that use RDF technologies.
+A collection of command-line utilities which are intended to support CI workflows for projects that use RDF technologies.
 
 ## Features
 
