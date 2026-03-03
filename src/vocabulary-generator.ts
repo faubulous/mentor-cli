@@ -215,9 +215,8 @@ export class VocabularyGenerator {
      * @param subjects URIs of the subjects to serialize.
      */
     private _serialize(inputStream: Readable, outputStream: Writable, prefix: string, subjects: { [key: string]: rdfjs.Literal[] }) {
-        outputStream.write(`import * as n3 from "n3";\n\n`);
-        outputStream.write(`const { namedNode } = n3.DataFactory;\n\n`);
-
+        outputStream.write(`import { NamedNode } from '@rdfjs/types';\n\n`);
+        
         const ns = this._getVocabularyNamespace(Object.keys(subjects));
 
         if (!ns) {
@@ -232,9 +231,19 @@ export class VocabularyGenerator {
 
         outputStream.write(`\n\n`);
 
-        this._writeNamespace(outputStream, p.toLowerCase(), ns, ns => `namedNode('${ns}')`);
+        this._writeNamespace(outputStream, p.toLowerCase(), ns, ns => this._serializeNamedNode(ns));
 
-        this._writeVocabulary(outputStream, p.toLowerCase(), subjects, s => `namedNode('${s}')`);
+        this._writeVocabulary(outputStream, p.toLowerCase(), subjects, s => this._serializeNamedNode(s));
+    }
+
+    private _serializeNamedNode(uri: string): string {
+        const termType = 'NamedNode';
+
+        return `{ termType: '${termType}', value: '${uri}', equals: ${this._serializeEquals(uri, termType)} } as NamedNode`;
+    }
+
+    private _serializeEquals(uri: string, termType: string): string {
+        return `(other: any) => other && (other.termType === '${termType}' || other.type === '${termType}') && other.value === '${uri}'`;
     }
 
     /**
