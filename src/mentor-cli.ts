@@ -2,10 +2,8 @@
 
 import { Command } from "commander";
 import { VocabularyGenerator } from "./vocabulary-generator";
-
-// The package manifest is outside of the TypeScript root directory, so it is
-// loaded with require instead of an import statement.
-const { version } = require("../package.json");
+// The version string is inlined from the package manifest at build time.
+import { version } from "../package.json";
 
 const program = new Command();
 const generator = new VocabularyGenerator();

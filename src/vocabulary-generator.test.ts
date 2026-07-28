@@ -57,7 +57,7 @@ describe("VocabularyGenerator", () => {
         try {
             result = await generator.parseFile('test/nonexisting.ttl');
 
-            fail();
+            expect.unreachable();
         } catch (error) {
             expect(error).toBeDefined();
 
