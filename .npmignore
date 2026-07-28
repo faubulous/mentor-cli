@@ -1,0 +1,7 @@
+# Packing manifest: unlike .gitignore, this file does NOT ignore out/ — the
+# compiled CLI must ship with the package. When .npmignore exists, npm ignores
+# .gitignore for packing, which would otherwise exclude the build output.
+dist/
+node_modules/
+test/*.ts
+*.tsbuildinfo

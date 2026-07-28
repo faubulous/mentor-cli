@@ -3,13 +3,17 @@
 import { Command } from "commander";
 import { VocabularyGenerator } from "./vocabulary-generator";
 
+// The package manifest is outside of the TypeScript root directory, so it is
+// loaded with require instead of an import statement.
+const { version } = require("../package.json");
+
 const program = new Command();
 const generator = new VocabularyGenerator();
 
 program
     .name("mentor-cli")
     .description("CLI for generating TypeScript vocabularies from RDF files")
-    .version("1.0.0");
+    .version(version);
 
 program
     .command("generate")

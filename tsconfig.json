@@ -1,7 +1,7 @@
 {
   "include": ["src/**/*"],
+  "exclude": ["src/**/*.test.ts"],
   "compilerOptions": {
-    "incremental": true,
     "target": "es2020",
     "module": "commonjs",
     "rootDir": "./src",
