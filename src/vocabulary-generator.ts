@@ -277,6 +277,15 @@ export class VocabularyGenerator {
         });
     }
 
+    /**
+     * Escape a string so that a template literal containing it evaluates to the string itself.
+     * @param str The string to escape, e.g. the content of a Turtle file.
+     * @returns The string with backslashes, backticks and placeholder openings escaped.
+     */
+    private _escapeTemplateLiteral(str: string): string {
+        return str.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+    }
+
     private async _writeSourceIndex(path: string): Promise<string> {
         return new Promise((resolve, reject) => {
             // Note: We append the raw source to an index file so the store can
@@ -291,11 +300,10 @@ export class VocabularyGenerator {
                 if (this._supportedExtensions.has(ext)) {
                     const prefix = this._getTypescriptIdentifier(parse(file).name);
 
-                    let content = fs.readFileSync(join(path, file)).toString();
-                    content = content.replace(/\\"/g, "'");
+                    const content = fs.readFileSync(join(path, file)).toString();
 
                     data += `export const ${prefix} = \``;
-                    data += content;
+                    data += this._escapeTemplateLiteral(content);
                     data += '`;\n\n';
                 }
             }

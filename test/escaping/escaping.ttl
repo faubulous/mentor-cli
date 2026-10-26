@@ -1,0 +1,6 @@
+@prefix ex: <http://example.org/escaping#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Characters that must be escaped when the source is embedded in a template literal.
+ex:Pattern rdfs:label "Pattern" ;
+    rdfs:comment "A pattern with a backslash: \\i\\c*, a quote: \"quoted\", a backtick: `code` and a placeholder: ${value}." .
