@@ -1,0 +1,20 @@
+@prefix ex: <http://example.org/vocabulary#> .
+@prefix other: <http://example.org/other/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<http://example.org/vocabulary> a owl:Ontology .
+
+ex:Date a rdfs:Class ;
+    rdfs:comment "A day of the calendar." ;
+    owl:equivalentClass other:Date .
+
+ex:Text a rdfs:Class .
+
+ex:startDate a rdf:Property .
+
+other:Date a rdfs:Class ;
+    rdfs:comment "A date of another vocabulary." .
+
+other:amends a rdf:Property .
