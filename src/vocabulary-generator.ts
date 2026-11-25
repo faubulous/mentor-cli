@@ -128,6 +128,9 @@ export class VocabularyGenerator {
     private _writeVocabulary(stream: Writable, prefix: string, subjects: { [key: string]: rdfjs.Literal[] }, value: (s: string) => string) {
         stream.write(`export const ${prefix} = {`);
 
+        // An identifier is written once, so a term that maps to the identifier of another is left out.
+        const written = new Set<string>();
+
         for (var s of Object.keys(subjects).filter(s => s).sort()) {
             var definitions = subjects[s];
 
@@ -143,11 +146,17 @@ export class VocabularyGenerator {
                 continue;
             }
 
+            label = this._getTypescriptIdentifier(label);
+
+            if (written.has(label)) {
+                continue;
+            }
+
+            written.add(label);
+
             if (comment) {
                 stream.write(`\n\t/** ${comment.value} */`);
             }
-
-            label = this._getTypescriptIdentifier(label);
 
             stream.write(`\n\t'${label}': ${value(s)},`);
         }
@@ -224,16 +233,32 @@ export class VocabularyGenerator {
         }
 
         const p = this._getTypescriptIdentifier(prefix);
+        const terms = this._getVocabularyTerms(subjects, ns);
 
         this._writeNamespace(outputStream, p.toUpperCase(), ns, ns => `'${ns}'`);
 
-        this._writeVocabulary(outputStream, p.toUpperCase(), subjects, s => `'${s}'`);
+        this._writeVocabulary(outputStream, p.toUpperCase(), terms, s => `'${s}'`);
 
         outputStream.write(`\n\n`);
 
         this._writeNamespace(outputStream, p.toLowerCase(), ns, ns => this._serializeNamedNode(ns));
 
-        this._writeVocabulary(outputStream, p.toLowerCase(), subjects, s => this._serializeNamedNode(s));
+        this._writeVocabulary(outputStream, p.toLowerCase(), terms, s => this._serializeNamedNode(s));
+    }
+
+    /**
+     * Get the terms of the vocabulary from the subjects of its file: those in its namespace, and the
+     * IRI of the vocabulary itself, which is the namespace without its trailing '#' or '/'. Terms of
+     * other vocabularies the file describes, such as those it maps its terms to, are left out, as
+     * they would otherwise take the identifiers of its own terms of the same name.
+     * @param subjects URIs of the subjects of the file, with their descriptions.
+     * @param namespace URI of the namespace of the vocabulary.
+     * @returns The terms of the vocabulary, with their descriptions.
+     */
+    private _getVocabularyTerms(subjects: { [key: string]: rdfjs.Literal[] }, namespace: string): { [key: string]: rdfjs.Literal[] } {
+        const vocabularyUri = namespace.replace(/[#/]$/, '');
+
+        return Object.fromEntries(Object.entries(subjects).filter(([s]) => s.startsWith(namespace) || s === vocabularyUri));
     }
 
     private _serializeNamedNode(uri: string): string {
