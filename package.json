@@ -1,6 +1,6 @@
 {
   "name": "@faubulous/mentor-cli",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Mentor command line utilities to support continous integration (CI) tasks in RDF projects.",
   "private": false,
   "license": "GPL",
